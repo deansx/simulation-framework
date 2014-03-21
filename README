@@ -6,7 +6,7 @@ tools.
 
 The basic framework is a provided as a set of classes in the "desim/" and
 "util/" directories.  As you might expect "desim/" contains the Discrete Event
-Simulation Executive, as well as the base simulation event type.
+Simulation executive, as well as the base simulation event type.
 
 "examples/text_event/" contains an example program that uses these classes to
 build about the most basic simulator that I could imagine.
