@@ -5,7 +5,7 @@
 *     in the simulation environment
 *
 *   STATUS:  Prototype
-*   VERSION:  0.00
+*   VERSION:  1.00
 *   CODER:  Dean Stevens
 *
 *   LICENSE:  The MIT License (MIT)

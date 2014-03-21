@@ -8,7 +8,7 @@
 *     queue.  All event classes in the system must be derived from this base.
 *     
 *   STATUS:  Prototype
-*   VERSION:  0.00
+*   VERSION:  1.00
 *   CODER:  Dean Stevens
 *
 *   LICENSE:  The MIT License (MIT)

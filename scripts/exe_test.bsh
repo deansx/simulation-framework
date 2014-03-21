@@ -24,7 +24,7 @@
 #       Writes a block of text to highlight that a test has failed.
 #   
 #   STATUS:  Prototype
-#   VERSION:  0.00
+#   VERSION:  1.00
 #   CODER:  Dean Stevens
 #   
 #   LICENSE:  The MIT License (MIT)

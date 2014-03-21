@@ -6,7 +6,7 @@
 *     objects that are derived from the parent SimBaseEvent.
 *   
 *   STATUS:  Prototype
-*   VERSION:  0.00
+*   VERSION:  1.00
 *   CODER:  Dean Stevens
 *
 *   LICENSE:  The MIT License (MIT)

@@ -17,7 +17,7 @@
 *     NOTE: IF THE ARGUMENTS CHANGE, display_help.cc MAY NEED TO CHANGE
 *     
 *   STATUS:  Prototype
-*   VERSION:  0.00
+*   VERSION:  1.00
 *   CODER:  Dean Stevens
 *   
 *   LICENSE:  The MIT License (MIT)
