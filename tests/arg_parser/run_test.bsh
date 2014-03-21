@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the regression test for the argument parser.
+#     
+#     The argument parser is tested by invoking the test program with
+#     various argument combinations, while directing std out / err out
+#     to a file, which can be compared to a reference file to verify
+#     that the argument parser worked as expected.
+#     
+#     Pass/fail counts are maintained and reported at the end of the
+#     script
+#   
+#     The failure count is returned by this script.
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Name for these tests
+TESTNM="ARGUMENT PARSER"
+# Test pass/fail counts
+PASSED=0
+FAILED=0
+# Reference (good) files for compare
+REF="test_ref/"
+# Output (test against) files for compare
+TST="test_out/"
+# The executable to test
+EXE='./arg_parser.exe'
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+
+source ${IDIR}clean_test_dir.bsh
+source ${IDIR}cmp_files.bsh
+source ${IDIR}exe_test.bsh
+
+clean_test_dir $TST
+
+ARGS="-t23 -L0xff"
+
+exe_test "-t23" "t23" ".txt" "Time=23"
+exe_test "$ARGS" "t23oxff" ".txt" "Time=23,Out=xFF"
+exe_test "-t1.7 -sfoo" "t1-7sfoo" ".txt" "Time=1.7,Stim=foo"
+exe_test "-t1.9E17" "t1-9E17" ".txt" "Time=1.9E17"
+exe_test "-t3.57a7" "t3-57a7" ".txt" "Time=3.57a7"
+exe_test "-t3x" "t3x" ".txt" "Time=3x"
+exe_test "-tabcdef" "tabcdef" ".txt" "Time=abcdef"
+exe_test "-tab7" "tab7" ".txt" "Time=ab7"
+
+
+show_scores "$TESTNM TESTS"
+
+if [ $FAILED -gt 0 ] ; then
+#     echo "*************************"
+#     echo "* BAD NEWS: TEST FAILED *"
+#     echo "*************************"
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\n$EXE Test Passed!\n"
+    exit 0
+fi

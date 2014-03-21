@@ -1,0 +1,4 @@
+
+Running BAD_PATH test...
+!!!FATAL ERROR: Could not open log output file:  "./known_bad/bad_path". (LogMgr)
+                Exiting.

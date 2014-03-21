@@ -1,0 +1,6 @@
+
+Running TIME_NOT_READY test...
+NOTE: Opened log output file:  "./test_out/outtst.csv" successfully.
+!!!FATAL ERROR: LogTextEvent: Unable to write log record.
+                Staged data not ready. (LogTextEvent)
+                Exiting.

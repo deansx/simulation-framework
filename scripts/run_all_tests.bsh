@@ -1,0 +1,88 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run all of the known regression test for the simulation
+#     environment.
+#     
+#     This script loops through all of the known test sub-directories, and
+#     executes the "run_test.bsh" script in each one.  The number of failures
+#     is tallied and reported at the end of the script.
+#   
+#     Pass/fail counts are maintained and reported at the end of the
+#     script.
+#
+#     The script returns the total failure count.
+#
+#   ARGUMENTS:
+#     $1 - Tells the script whether to force a clean build in each test
+#          directory.  If "REMAKE" is specified for this argument, the script
+#          forces an unconditional make.  This might could be useful if you're
+#          cleaning up after previous build errors, or if you really want to
+#          ensure that the regression tests are run against the very latest.
+#          If "REMAKE" is not specified, the script simply issues a make
+#          command in the target test sub-directory.  This latter path ensures
+#          that the target executable does, indeed, build successfully, with
+#          the dependencies specified in the makefile.
+#          NOTE, however, that, if make encounters errors, the rest of the
+#          test is not attempted.  Therefore, any potential failures resulting
+#          from running the actual test won't be reported.  The build failures
+#          will be captured in the failure count report, but the regression
+#          tests might still fail, even after the build issues are resolved.
+#   
+#   RETURNS:
+#     The cumulative failure count is returned through an exit status.
+#     
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+FAILED=0
+
+do_test() {
+    # Actually executes each test.
+    # $1 - The pathname to the test sub-directory
+    # $2 - Deletes existing executables and forces an unconditional make
+    #      if "REMAKE" is specified
+    
+    # Set working directory into the test sub directory
+    cd "$1"
+    pwd
+    if [[ $2 == "REMAKE" ]] ; then
+	echo -e "\nFORCING UNCONDITIONAL MAKE\n"
+        make -B
+    else
+	echo -e "\nNOT FORCING UNCONDITIONAL RE-MAKE\n"
+        make	
+    fi
+    MKRES=$?
+    let FAILED+=$MKRES
+    if (( $MKRES == 0 )); then
+        run_test.bsh
+        let FAILED+=$?
+    else
+       	echo -e "\nERROR: Not running tests in $1 due to make failure..."
+    fi
+    cd ../../scripts
+}
+
+source ./exe_test.bsh
+
+echo "$# argument(s)"
+for i in $(find ../tests/ -maxdepth 1 -mindepth 1 -type d ! -name shared_code); do
+    do_test "$i" $1
+    echo -e "\n################################################\n"
+    echo -e "Cumulative Failure Count:  $FAILED\n"
+done
+
+if [ $FAILED -gt 0 ] ; then
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\n ALL TESTS PASSED!\n"
+    exit 0
+fi

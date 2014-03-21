@@ -1,0 +1,8 @@
+
+Running THREE_LINE test...
+WARNING: Line 1
+         Line 2
+         Line 3
+NOTE: Line 1
+      Line 2
+      Line 3

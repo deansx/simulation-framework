@@ -1,0 +1,7 @@
+
+Running REC_BAD_STREAM test...
+NOTE: Opened log output file:  "./test_out/outtst.csv" successfully.
+!!!FATAL ERROR: Unable to write log record.
+                Output stream either not open, or returned bad status.
+                (LogTextEvent)
+                Exiting.

@@ -1,0 +1,2 @@
+File to the common_utilities methods to test for existence and read / write
+access (also implies read access)

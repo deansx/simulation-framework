@@ -1,0 +1,5 @@
+ERROR: Foo  1
+ERROR: Line 1
+ERROR: DEAD 1
+!!!FATAL ERROR: Line 1
+                Exiting.

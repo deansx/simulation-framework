@@ -1,0 +1,7 @@
+Nice job:  All arguments OK
+
+Config Path:  ./setup.txt
+Stimul Path:  foo
+Log    Path:  ./logfile.csv
+Run Until:    1.7
+Show Help:    NO

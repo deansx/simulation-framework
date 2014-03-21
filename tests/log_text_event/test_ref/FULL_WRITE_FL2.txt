@@ -1,0 +1,8 @@
+time,text
+25.31,payload-25.31
+25.41,payload-25.41
+25.61,payload-25.61
+25.91,payload-25.91
+26.31,payload-26.31
+26.81,payload-26.81
+27.41,payload-27.41

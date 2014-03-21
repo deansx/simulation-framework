@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Run static checker against the sim source code..
+#     
+#   ARGUMENTS:
+#     $1 - filename to check
+#   
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+cppcheck -I ../util -I ../sim --platform=unix64 --std=c++11 --enable=all -i aoData.cc $1

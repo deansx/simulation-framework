@@ -1,0 +1,138 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     This file contains three functions: exe_test(), show_scores() and
+#     fail_banner()
+#     
+#     exe_test():
+#       Script to run an executable with the specified arguments.
+#       
+#       Std out and err out are either redirected to a test file, or to
+#       separate files.  The script then compares the generated output
+#       file(s) to corresponding reference file(s).  This as a mechanism
+#       to validate that the test program demonstrated the expected
+#       behavior.
+#  
+#       Assumes that REF, TST, EXE, PASSED & FAILED are all defined in a
+#       calling script.
+#     
+#     show_scores():
+#       Writes a block of text with a test "label" and the pass fail
+#       counts
+#   
+#     fail_banner():
+#       Writes a block of text to highlight that a test has failed.
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+
+exe_test() {
+    # Runs the executable with the specified arguments.  Assembles pathnames
+    # for both reference and output files, runs the test, then calls
+    # cmp_files() to compare the results
+    # $1 - Args to executable
+    # $2 - Test file base name
+    # $3 - File extension (.txt, .csv, ...)
+    # $4 - Test name
+    # $5 - Actually serves as a tri-state (I know, lazy programming, I
+    #      didn't want to break a bunch of existing scripts).
+    #    - "true" - to evaluate separate stderr / stdout files.  The two
+    #      streams are each directed to a separate file and then each
+    #      file is compared to a corresponding reference file.  Both
+    #      comparisons must succeed for the test to pass.
+    #    - "false" - both stdout and stderr are directed to the same file.
+    #      the script then compares the output file to a corresponding
+    #      reference file AND also compares another file to a likewise
+    #      corresponding reference file.  This second file could be
+    #      something created / written by the program under test.  Both
+    #      comparisons must succeed for the test to pass.
+    #    - ABSENT - if no fifth argument is specified, both stdout and
+    #      stderr are directed to the same output file, and this file
+    #      is compared to a corresponding reference file.  This case
+    #      only has a single comparison, which must succeed for the
+    #      test to pass.
+
+    # Initialize the string used to differentiate between pairs of files.
+    # each of these will represent one of the pairs.
+    FL1=''
+    FL2=''
+    # If the caller specified a fifth argument...
+    if (( $# > 4 )); then
+        if $5; then
+            # There are at least 5 arguments, and Arg5 is "true"
+            # We'll be separating the stdout and stderr streams into
+            # separate files, with these designators
+            FL1="_OUT"
+            FL2="_ERR"
+        else
+            # There are at least 5 arguments, and Arg5 evaluated as "false"
+            # (we'll treat actually specifying "false" the same as specifying
+            # any other value for Arg5, although the interpreter issues an
+            # error for the latter).
+            # We'll be looking at two pairs of files, the first of which
+            # will be the combined stdout/stderr streams, the second of which
+            # will have arbitrary content
+            FL1="_FL1"
+            FL2="_FL2"
+        fi
+    fi
+    # Initialize the filenames as:
+    #  "which_dir/"+"file_base"+"which_pair"+"extension"
+    TRF1=$REF$2$FL1$3
+    TOF1=$TST$2$FL1$3
+    TRF2=$REF$2$FL2$3
+    TOF2=$TST$2$FL2$3
+    echo "$4 evaluates $TRF1 and $TOF1 with $1"
+    if [[ $FL1 == '' ]] || [[ $FL1 == '_FL1' ]]; then
+	# Either the user didn't specify an Arg5, or Arg5 evaluated as
+	# "false"
+        # Combine both stdout & stderr in a single stream
+        $EXE $1 &>"$TOF1"
+    else
+        # Separate streams for stdout & stderr
+        $EXE $1 1>"$TOF1" 2>"$TOF2"
+    fi
+    
+    # Finally, compare the file pair(s)
+    if [[ $FL1 == '' ]]; then
+        # Only compare the first pair of files
+        cmp_files "$TRF1" "$TOF1" "$4"
+    else
+        # Either we have separate stdout & stderr files, and we're compare
+        # output stream files to their corresponding reference files, OR we
+        # are comparing the combined stream file against a reference file and
+        # comparing an arbitrary second file against a reference file.
+        echo "$4 also evaluates $TRF2 and $TOF2 with $1"
+        cmp_files "$TRF1" "$TOF1" "$4" "$TRF2" "$TOF2"
+    fi
+}
+
+
+show_scores() {
+    # Writes a block of text with a test "label" and the pass fail
+    # counts
+    #
+    # $1 - text label for the pass/fail block
+    # Assumes that "PASSED" and "FAILED" are defined by the caller, as is
+    # standard for these scripts.
+
+    echo ""
+    echo "===== $1:  =====";
+    echo "      Passed:  $PASSED"
+    echo "      Failed:  $FAILED"
+}
+
+
+fail_banner() {
+    echo ""
+    echo "*************************"
+    echo "* BAD NEWS: TEST FAILED *"
+    echo "*************************"
+    echo ""
+}

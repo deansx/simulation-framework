@@ -1,0 +1,22 @@
+# emacs files
+*~
+[#]*[#]
+.\#*
+
+# compiled files
+*.o
+*.s
+*.exe
+# dependency files
+*.d
+
+# test output files
+tests/*/test_out/*.*
+
+# archive & scratch directories
+archive/
+scratch
+# misc
+
+# html files in source - they should be in www...
+#src/*.html

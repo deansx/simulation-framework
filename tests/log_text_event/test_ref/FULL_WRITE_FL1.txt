@@ -1,0 +1,3 @@
+
+Running FULL_WRITE test...
+NOTE: Opened log output file:  "./test_out/FULL_WRITE_FL2.txt" successfully.

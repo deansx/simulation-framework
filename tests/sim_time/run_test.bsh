@@ -1,0 +1,88 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the regression test for the SimTime class.
+#     
+#     The test has two modes.  Some tests are coded completely in the
+#     C++ test program.  They report their results to stdout and in the
+#     following fashion:  the failure count is returned from the program;
+#     the pass count is written to a file to be read by this script.
+#
+#     The other mode tests parameters that should crash the program.
+#     These are evaluated by invoking the test program with various
+#     argument combinations, while directing std out / err out to a
+#     file, which can be compared to a reference file to verify that the
+#     code is behaving as expected.
+#     
+#     Pass/fail counts are maintained and reported at the end of the
+#     script.
+#
+#     The failure count is returned by this script.
+#   
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Name for these tests
+TESTNM="SIM TIME"
+# Test pass/fail counts
+PASSED=0
+FAILED=0
+# Reference (good) files for compare
+REF="test_ref/"
+# Output (test against) files for compare
+TST="test_out/"
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+# The executable to test
+EXE="time_test.exe"
+
+source ${IDIR}clean_test_dir.bsh
+source ${IDIR}cmp_files.bsh
+source ${IDIR}exe_test.bsh
+
+fatal_test() {
+  exe_test "$1" "$1" ".txt" "$1"
+  cat $TST$1.txt
+}
+
+clean_test_dir $TST
+
+# Run the executable without arguments to execute the tests coded directly
+# in C++
+$EXE
+
+# Check for failures, and add them to the FAILED accumulator
+TFAIL=$?
+if (( $TFAIL > 0 )); then
+  let FAILED+=$TFAIL
+fi
+
+# Pass results should have been written to a file.  Read them and add them
+# to the PASSED accumulator
+TPASS=0
+read TPASS < $TST"pass_count.txt"
+let PASSED+=$TPASS
+
+# Run the fatal tests.  These terminate the program, so they're run 
+# individually.
+fatal_test "OVERFLOW_ON_ADD"
+fatal_test "OVERFLOW_ON_SET"
+fatal_test "OVERFLOW_ON_ADD_SIMTIME"
+
+echo ""
+echo ""
+show_scores "$TESTNM TESTS"
+
+if [ $FAILED -gt 0 ] ; then
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\n$EXE Test Passed!\n"
+    exit 0
+fi

@@ -1,0 +1,6 @@
+
+Running TWO_LINE test...
+WARNING: Line 1
+         Line 2
+NOTE: Line 1
+      Line 2

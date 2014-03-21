@@ -1,0 +1,3 @@
+
+Running RECORD test...
+NOTE: Opened log output file:  "./test_out/RECORD_FL2.txt" successfully.

@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the regression test for the simulation executive
+#     (SimExec class).
+#     
+#     The SimExec needs events derived from the pure virtual Sim_BaseEvent
+#     class.  We're accomplishing this by using the code for the SimTextEvent
+#     example as the infrastructure for these tests.
+#     
+#     Pass/fail counts are maintained and reported at the end of the
+#     script.
+#
+#     The script returns the total failure count.
+#   
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Name for these tests
+TESTNM="STIM TEXT EVENT LOADER"
+# Test pass/fail counts
+PASSED=0
+FAILED=0
+# Reference (good) files for compare
+REF="test_ref/"
+# Output (test against) files for compare
+TST="test_out/"
+# Filename extension for the test files
+EXTN=".txt"
+# The executable to test
+EXE='./testx.exe'
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+
+source ${IDIR}clean_test_dir.bsh
+source ${IDIR}cmp_files.bsh
+source ${IDIR}exe_test.bsh
+
+clean_test_dir $TST
+
+pkg_time_test() {
+    # runs the "exe_test" script with arguments that specify the "normal"
+    # stimulus file and the duration for the simulation to run
+    # the argument to the executable, the test file base name and the test
+    # name.  Also, tells exe_test to separate stdout and stderr.
+    # $1 - "Run Until" time value
+    # $2 - Test output file base name string
+    echo "STIM ARG is: $STARG"
+    ARGBS="$STARG -T"
+    exe_test "$ARGBS$1" "$2" "$EXTN" "RunUntil=$1"
+}
+
+STARG="-Stest_ref/stim.csv -Ltest_out/logfile.csv"
+
+# Run the basic test
+exe_test "$STARG" "STD" "$EXTN" "BASIC TEST"
+
+# Run the "RunUntil Time" tests...
+#  testx -Stest_ref/stim.csv -T1450 &>./test_ref/T-1450.txt
+pkg_time_test 0.5 "T-0-5"
+pkg_time_test 1450 "T-1450"
+pkg_time_test 1500.15 "T-1500-15"
+pkg_time_test 3000 "T-3000"
+pkg_time_test 3001 "T-3001"
+
+
+show_scores "$TESTNM TESTS"
+
+if [ $FAILED -gt 0 ] ; then
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\n$EXE Test Passed!\n"
+    exit 0
+fi

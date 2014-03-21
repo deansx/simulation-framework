@@ -1,0 +1,3 @@
+!!!FATAL ERROR: Unable to write output record.
+                Output stream either not open, or returned bad status.
+                Exiting.

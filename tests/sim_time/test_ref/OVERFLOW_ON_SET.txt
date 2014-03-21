@@ -1,0 +1,4 @@
+Assign time that overflows ticks...
+!!!FATAL ERROR: 3.68935e+17 exceeds permissible range.
+                Maximum Value for Time Units is: 1.84467e+17
+                Exiting.

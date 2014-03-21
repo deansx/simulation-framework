@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to update the Revision Date and Version number information for
+#     the simulation environment.  This script is the recommended mechanism
+#     for updating the program's version information.  It should be more
+#     convenient, and less prone to error, than editing the version file
+#     directly.
+#     
+#     The information in question is stored in an appropriate version source
+#     code file identified in this script as "VFILE".  The script updates
+#     the Revision Date and Version number information with the values
+#     specified below.
+#     
+#     By default, the Revision Date is set with today's Y/M/D, but users could
+#     modify this script to accept arguments, or to have these be editable
+#     values.
+#     
+#     The Major Version ("MAJVER") and Minor Version ("MINVER") are to be
+#     edited in this script, as appropriate.  Note that both fields are
+#     represented by two (2) character fields where each character is [0-9].
+#     
+#     This script is expected to be run from the "scripts/" directory.  This
+#     ensures that the relative pathnames will be correct.
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+#
+
+# Version Number information:
+# NOTE:  Both fields are represented by two (2) character fields where each
+#        character is [0-9].
+# Generally, the next two lines are the only ones that should change when the
+# version number is rolled.
+MAJVER="01"
+MINVER="01"
+
+# Revision Date information
+REVYR=$(date +'%Y')
+REVMO=$(date +'%m')
+REVDY=$(date +'%d')
+
+# Directories containing the version file to be modified by this script
+VERSDIR="../desim/"
+VTSTDIR="../tests/version/test_ref/"
+# Name of the version files
+VFILE="sim_version.cc"
+TARGET=$VERSDIR$VFILE
+VTEST="VERSION.txt"
+VERTRG=$VTSTDIR$VTEST
+
+# Make the changes:
+
+# Revision Date
+printf "%s\n" ",s/revision_date_ = \"[0-9]\{4\}.[0-9]\{2\}.[0-9]\{2\}/revision_date_ = \"$REVYR.$REVMO.$REVDY/" w q | ed $TARGET
+printf "%s\n" ",s/Revision Date: [0-9]\{4\}.[0-9]\{2\}.[0-9]\{2\}/Revision Date: $REVYR.$REVMO.$REVDY/" w q | ed $VERTRG
+
+# Version Number
+printf "%s\n" ",s/version_number_ = \"[0-9]\{2\}.[0-9]\{2\}/version_number_ = \"$MAJVER.$MINVER/" w q | ed $TARGET
+printf "%s\n" ",s/Version: v.[0-9]\{2\}.[0-9]\{2\}/Version: v.$MAJVER.$MINVER/" w q | ed $VERTRG
+

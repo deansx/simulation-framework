@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to compare two files, or optionally, two pairs of files,
+#     using cmp.
+#
+#     Assumes PASSED & FAILED are already defined in a calling script.
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+#
+#
+
+cmp_passed() {
+  # Echos pass message, increments pass count and sets return value
+  # $1 - Name of the test that just passed
+  echo "$1 Passed!"
+  let PASSED++
+  return 0
+}
+
+
+cmp_failed() {
+  # Echos fail message, increments fail count and sets return value
+  # $1 - Name of the test that just failed
+  echo "$1 Failed..."
+  let FAILED++
+  return 1
+}
+
+
+cmp_files() {
+  # Compares two files, or optionally two pairs of, files.  Maintains
+  # a running tally of pass/fail counts. Generates error with test name
+  # if file compare fails.
+  # Returns 0 if the files match, 1 otherwise.
+  # $1 - First File
+  # $2 - Second File
+  # $3 - Test Name
+  # $4 - Third File (optional)
+  # $5 - Fourth File (optional)
+    
+  if cmp -s  "$1" "$2" ; then
+    # First compare passed
+    if (( $# == 5 )); then
+      # Caller specified arguments for the second compare
+      if cmp -s "$4" "$5" ; then
+	# Second compare passed, so the test passed
+        cmp_passed "$3"
+      else
+	# Second compare failed, so the test failed.
+        cmp_failed "$3"
+      fi
+    else
+      # Caller did not specify arguments for second compare, so, since
+      # first compare passed, the test passed
+      cmp_passed "$3"
+    fi
+  else
+    # The first compare failed, so the test failed
+    cmp_failed "$3"
+  fi
+}

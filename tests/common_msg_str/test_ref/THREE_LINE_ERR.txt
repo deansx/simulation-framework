@@ -1,0 +1,7 @@
+ERROR: Line 1
+       Line 2
+       Line 3
+!!!FATAL ERROR: Line 1
+                Line 2
+                Line 3
+                Exiting.

@@ -1,0 +1,101 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the regression test for the common_utilities module.
+#     
+#     The common_utilities module is mostly tested directly in the C++
+#     code of the common.exe executable.  Unlike many of the other sim
+#     tests, there is no need to compare reference and output files.  This
+#     script just runs the program, and tabulates the results.  Each test
+#     section (defined here as an invocation of the test executable with a
+#     specific argument) may have multiple sub-tests, but this script only
+#     knows whether a given section passed, or, conversely, how many of its
+#     sub-tests failed.
+#
+#     This script tabulates the failures, if any, and either reports the
+#     number of sub-test failures, or reports that all tests passed.
+#
+#     The script returns the number of sub-tests that failed.
+#     
+#     Pass/fail counts are maintained and reported at the end of the
+#     script
+#   
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Name for these tests
+TESTNM="COMMON UTILITIES"
+# Test Pass count
+PASSED=0
+# Sub-Test pass count
+SPASSED=0
+# Test Fail count
+FAILED=0
+
+
+# Reference (good) files for compare
+REF="test_ref/"
+# Output (test against) files for compare
+TST="test_out/"
+# The executable to test
+EXE='./common.exe'
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+
+source ${IDIR}clean_test_dir.bsh
+#source ${IDIR}cmp_files.bsh
+source ${IDIR}exe_test.bsh
+
+clean_test_dir $TST
+
+pkg_test() {
+    # runs the "exe_test" script with the name of the test specifying
+    # the argument to the executable, the test file base name and the test
+    # name.  Also, tells exe_test to separate stdout and stderr.
+    # $1 - Test name
+    $EXE $1
+    RSLT=$?
+    # Add the section fail results to the running tally.
+    let FAILED+=$RSLT
+    # Add the section pass results to the running tally.
+    SPASSED=0
+    read SPASSED < $TST"pass_count.txt"
+    let PASSED+=$SPASSED
+    if (( $RSLT == 0 )); then
+        echo "\"$1\" Test Section Passed"
+    else
+        echo "\"$1\" Test Section Failed; $RSLT sub-tests failed."
+    fi
+    echo "------------------------------------------------------------"
+    echo ""
+}
+
+# Fix permissions on "write-only" file
+WOFN="f_exists_w.txt"
+chmod 222 $REF$WOFN
+ls -l $REF$WOFN
+
+pkg_test "FILE_EXISTS"
+pkg_test "FILE_READ"
+pkg_test "FILE_WRITE"
+pkg_test "FILE_RW"
+pkg_test "STREAM_FMT"
+
+# Set permissions on "write-only" file, so that back-up & etc. Will work.
+chmod 622 $REF$WOFN
+ls -l $REF$WOFN
+
+show_scores "$TESTNM TESTS"
+if [ $FAILED -gt 0 ] ; then
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\nALL $PASSED \"$EXE\" Tests Passed!\n"
+    exit 0
+fi

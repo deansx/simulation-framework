@@ -1,0 +1,4 @@
+Try adding UserTime to overflow...
+!!!FATAL ERROR: Adding 1.84467e+17 to 1.84467e+17 would exceed
+                permissible range.
+                Exiting.

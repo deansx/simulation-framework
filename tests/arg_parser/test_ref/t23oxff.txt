@@ -1,0 +1,7 @@
+Nice job:  All arguments OK
+
+Config Path:  ./setup.txt
+Stimul Path:  ./stim.csv
+Log    Path:  0xff
+Run Until:    23
+Show Help:    NO

@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the regression test for the StimLoader and
+#     StimTextEventLoader classes.
+#     
+#     The StimTextEventLoader class functionality is tested by loading a known
+#     stimulus file, running a simulation, and then verifying that both the
+#     resulting logfile, and the transcript of the session match corresponding
+#     reference files.
+#     
+#     Pass/fail counts are maintained and reported at the end of the
+#     script.
+#
+#     The script returns the total failure count.
+#   
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Name for these tests
+TESTNM="STIM TEXT EVENT LOADER"
+# Test pass/fail counts
+PASSED=0
+FAILED=0
+# Reference (good) files for compare
+REF="test_ref/"
+# Output (test against) files for compare
+TST="test_out/"
+# Filename extension for the test files
+EXTN=".txt"
+# The executable to test
+EXE='./stim_loader.exe'
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+
+source ${IDIR}clean_test_dir.bsh
+source ${IDIR}cmp_files.bsh
+source ${IDIR}exe_test.bsh
+
+clean_test_dir $TST
+
+# Run the test...
+exe_test "" "STIM_LOAD" ".txt" "$TESTNM" false
+
+
+show_scores "$TESTNM TESTS"
+
+if [ $FAILED -gt 0 ] ; then
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\n$EXE Test Passed!\n"
+    exit 0
+fi

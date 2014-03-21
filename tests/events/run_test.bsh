@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the regression test for the basic event classes.
+#     
+#     The the event classes are tested directly in the C++ code of the
+#     event.exe executable.  Unlike some of the other sim
+#     tests, there is no need to compare reference and output files.  This
+#     script just runs the program, and displays the results.
+#
+#     This script reports the number of test failures, if any.  If there
+#     are no failures, the script reports that all tests have passed.
+#
+#     The script returns the number of tests that failed.
+#     
+#     Pass/fail counts are recovered after the executable runs.
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Test Pass count
+PASSED=0
+TPASS=0
+# Test Fail count
+FAILED=0
+# Output (test against) files for compare
+TST="test_out/"
+# The executable to test
+EXE='./event.exe'
+TESTNM="EVENT TEST"
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+
+source ${IDIR}clean_test_dir.bsh
+source ${IDIR}exe_test.bsh
+
+clean_test_dir $TST
+
+RSLT=0
+$EXE
+RSLT=$?
+
+# Leave open the possibility that more tests will be developed at the script
+# level, so add the returned results to "FAILED"
+let FAILED+=$RSLT
+
+# Leave open the possibility that more tests will be developed at the script
+# level, so add the count read to "PASSED"
+read TPASS < $TST"pass_count.txt"
+let PASSED+=$TPASS
+
+show_scores "$TESTNM TEST SCIPT"
+if (( $FAILED == 0 )); then
+    echo ""
+    echo "\"$TESTNM SCRIPT\":  All $PASSED tests Passed"
+    echo ""
+    exit 0
+else
+    fail_banner
+    echo "\"$TESTNM SCRIPT\":  $FAILED tests failed."
+    echo ""
+    exit $FAILED
+fi

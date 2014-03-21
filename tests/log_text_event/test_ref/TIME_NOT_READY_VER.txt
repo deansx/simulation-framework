@@ -1,0 +1,4 @@
+
+Running TIME_NOT_READY_VER test...
+NOTE: Opened log output file:  "./test_out/outtst.csv" successfully.
+TIME_NOT_READY_VER: PASSED!

@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the test for the Version information.
+#     
+#     The program version number, revision date and build datetime are
+#     written to a test file.  If the user has specified the manual
+#     inspection option (see below), the file is dumped to the shell window,
+#     and the user is asked to verify that it is correct.  This is optional
+#     to allow a form of this script to run without user intervention for
+#     full suite regression tests.
+#     Next, the specific date and time information is stripped from the file
+#     and it is compared to a reference file.  We strip the build datetime
+#     so that the reference file doesn't change with every build.  The
+#     reference file does get updated with version number and revision date
+#     information when these are changed with the "update_version.bsh" script.
+#     
+#     Pass/fail counts are maintained and reported at the end of the
+#     script.
+#
+#     The script returns the total failure count.
+#   
+#   ARGUMENTS:
+#     $1 - If the argument is "I" or "i", the script adds a visual
+#          inspection test.
+#   
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Name for these tests
+TESTNM="VERSION"
+# Test pass/fail counts
+PASSED=0
+FAILED=0
+# Reference (good) files for compare
+REF="test_ref/"
+# Output (test against) files for compare
+TST="test_out/"
+# Filename for the test files
+FILENM="VERSION.txt"
+TSTF="$TST$FILENM"
+# The executable to test
+EXE='./vers_test.exe'
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+
+source ${IDIR}clean_test_dir.bsh
+source ${IDIR}cmp_files.bsh
+source ${IDIR}exe_test.bsh
+
+clean_test_dir $TST
+
+# Run the executable...
+$EXE ?>"$TSTF"
+
+if [[ $1 == 'I' ]] || [[ $1 == 'i' ]]; then
+    echo -e "\n---------------------------------------\n"
+    cat "$TSTF"
+    echo -e "\n---------------------------------------\n"
+    echo "Does the version information above appear correct?"
+    echo -e "    Please press '1' or '2' to make your selection.\n"
+    select yn in "Yes, it's fine" "No, it's not correct"; do
+        case $yn in
+            "Yes, it's fine" ) let PASSED++; break;;
+            "No, it's not correct" ) let FAILED++; break;;
+        esac
+    done
+fi
+
+# strip the build date out of the output, we expect that this will be
+# changing regularly
+printf "%s\n" ",s/Build Datetime:.*/Build Datetime:/" w q | ed "$TSTF"
+
+# Compare to the reference file
+cmp_files "$REF$FILENM" "$TSTF" "Version Output File"
+
+show_scores "$TESTNM TESTS"
+
+if [ $FAILED -gt 0 ] ; then
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\n$EXE Test Passed!\n"
+    exit 0
+fi

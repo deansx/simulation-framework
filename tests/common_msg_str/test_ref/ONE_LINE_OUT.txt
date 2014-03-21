@@ -1,0 +1,4 @@
+
+Running ONE_LINE test...
+WARNING: Line 1
+NOTE: Line 1

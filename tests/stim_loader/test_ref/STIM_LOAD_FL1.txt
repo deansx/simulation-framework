@@ -1,0 +1,35 @@
+
+********************************************
+***  Welcome to the Stimulus Load Test!  ***
+********************************************
+
+NOTE: Simulation "Run until time" set to 1e+06 time units.
+NOTE: Reading stimulus from file:  ./test_ref/stim.csv
+Base Time is:  1
+NOTE: Opened log output file:  "./test_out/STIM_LOAD_FL2.txt" successfully.
+NOTE: Dispatched - "Time1.0" at: 1
+NOTE: Dispatched - "Time3.0" at: 3
+NOTE: Dispatched - "Time27.3" at: 27.3
+#########Executing LoadStimTimerEvent Dispatch at:  1006.1
+NOTE: Dispatched - "Time1006.1" at: 1006.1
+NOTE: Dispatched - "2Time1006.1" at: 1006.1
+NOTE: Dispatched - "Time1137.34" at: 1137.34
+NOTE: Dispatched - "Time1500.15" at: 1500.15
+NOTE: Dispatched - "Time1700.17" at: 1700.17
+NOTE: Dispatched - "Time1800.18" at: 1800.18
+NOTE: Dispatched - "Time2002.1" at: 2002.1
+#########Executing LoadStimTimerEvent Dispatch at:  2525.25
+NOTE: Dispatched - "Time2525.25" at: 2525.25
+NOTE: Dispatched - "2Time2525.25" at: 2525.25
+NOTE: Dispatched - "3Time2525.25" at: 2525.25
+NOTE: Dispatched - "4Time2525.25" at: 2525.25
+NOTE: Dispatched - "5Time2525.25" at: 2525.25
+NOTE: Dispatched - "Time2724.25" at: 2724.25
+NOTE: Dispatched - "Time2727.27" at: 2727.27
+NOTE: Dispatched - "Time3000" at: 3000
+#########Executing LoadStimTimerEvent Dispatch at:  3000
+
+
+NOTE: Simulation finished at time 3000
+
+=>=>=>=>=>=>=>>> Simulation Complete <<<=<=<=<=<=<=<=

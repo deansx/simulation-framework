@@ -1,0 +1,66 @@
+
+********************************************
+***  Welcome to the Text Event Example!  ***
+********************************************
+Executing:
+Version: v.01.01
+Revision Date: 2014.03.04;  Build Datetime: Mar  4 2014 23:21:29
+Compiled For:  LINUX
+
+
+=========================================================
+===   Copyright 2014 Spinnaker Advisory Group, Inc.   ===
+===               All Rights Reserved.                ===
+=========================================================
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+
+NOTE: Reading stimulus from file:  test_ref/stim.csv
+NOTE: Stimulus file header line skipped.
+NOTE: Opened log output file:  "test_out/logfile.csv" successfully.
+NOTE: Dispatched - "Time1.0" at: 1
+NOTE: Dispatched - "Time3.0" at: 3
+NOTE: Dispatched - "Time27.3" at: 27.3
+#########Executing LoadStimTimerEvent Dispatch at:  1006.1
+NOTE: Dispatched - "Time1006.1" at: 1006.1
+NOTE: Dispatched - "2Time1006.1" at: 1006.1
+NOTE: Dispatched - "Time1137.34" at: 1137.34
+NOTE: Dispatched - "Time1500.15" at: 1500.15
+NOTE: Dispatched - "Time1700.17" at: 1700.17
+NOTE: Dispatched - "Time1800.18" at: 1800.18
+NOTE: Dispatched - "Time2002.1" at: 2002.1
+#########Executing LoadStimTimerEvent Dispatch at:  2525.25
+NOTE: Dispatched - "Time2525.25" at: 2525.25
+NOTE: Dispatched - "2Time2525.25" at: 2525.25
+NOTE: Dispatched - "3Time2525.25" at: 2525.25
+NOTE: Dispatched - "4Time2525.25" at: 2525.25
+NOTE: Dispatched - "5Time2525.25" at: 2525.25
+NOTE: Dispatched - "Time2724.25" at: 2724.25
+NOTE: Dispatched - "Time2727.27" at: 2727.27
+NOTE: Dispatched - "Time3000" at: 3000
+#########Executing LoadStimTimerEvent Dispatch at:  3000
+
+
+NOTE: Simulation finished at time 3000
+
+=>=>=>=>=>=>=>>> Simulation Complete at time 3000 <<<=<=<=<=<=<=<=

@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+#   DESCRIPTION:
+#     Script to run the regression test for the common_ messages & strings
+#     modules.
+#     
+#     The common_messages and common_strings modules are tested by invoking
+#     the test executable with various arguments, while directing stdout and
+#     errout to files, which can be compared to corresponding reference
+#     files to verify that the module test executable worked as expected.
+#     
+#     Pass/fail counts are maintained and reported at the end of the
+#     script
+#
+#     The failure count is returned by the script
+#   
+#   
+#   STATUS:  Prototype
+#   VERSION:  0.00
+#   CODER:  Dean Stevens
+#   
+#   LICENSE:  The MIT License (MIT)
+#             See LICENSE.txt in the root (sim) directory of this project.
+#   Copyright (c) 2014 Spinnaker Advisory Group, Inc.
+
+# Name for these tests
+TESTNM="COMMON MESSAGES and STRINGS"
+# Test pass/fail counts
+PASSED=0
+FAILED=0
+# Reference (good) files for compare
+REF="test_ref/"
+# Output (test against) files for compare
+TST="test_out/"
+# The executable to test
+EXE='./common.exe'
+# The pathname to the directory with files to include with the source cmd
+IDIR="../../scripts/"
+
+source ${IDIR}clean_test_dir.bsh
+source ${IDIR}cmp_files.bsh
+source ${IDIR}exe_test.bsh
+
+clean_test_dir $TST
+
+pkg_test() {
+    # runs the "exe_test" script with the name of the test specifying
+    # the argument to the executable, the test file base name and the test
+    # name.  Also, tells exe_test to separate stdout and stderr.
+    # $1 - Test name
+    exe_test $1 $1 ".txt" $1 true
+}
+
+pkg_test "ONE_LINE"
+pkg_test "TWO_LINE"
+pkg_test "THREE_LINE"
+pkg_test "FOUR_LINE"
+pkg_test "FIVE_LINE"
+pkg_test "SIX_LINE"
+pkg_test "SEVEN_LINE"
+pkg_test "BAD_STREAM"
+pkg_test "TIME_OVER"
+
+
+show_scores "$TESTNM TESTS"
+
+if [ $FAILED -gt 0 ] ; then
+    fail_banner
+    exit $FAILED
+else
+    echo -e "\n$EXE Test Passed!\n"
+    exit 0
+fi

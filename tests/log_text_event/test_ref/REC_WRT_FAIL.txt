@@ -1,0 +1,5 @@
+
+Running REC_WRT_FAIL test...
+!!!FATAL ERROR: Unable to write log record.
+                Output stream returned bad status. (LogTextEvent)
+                Exiting.
