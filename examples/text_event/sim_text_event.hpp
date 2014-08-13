@@ -24,7 +24,7 @@
 #include "sim_base_event.hpp"
 
 class SimTextEvent : public SimBaseEvent {
-// Generic base class for all events
+// Class that represents events containing a textual payload
  public:
   // "event_time" - time that the event will be "dispatched" by the simulation
   //       executive
